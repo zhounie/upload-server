@@ -6,6 +6,7 @@ const fs = require('fs')
 const path = require('path')
 const KoaBody = require('koa-body')
 const KoaStatic = require('koa-static')
+const { autoMkdir } = require('./utils/index')
 
 app.use(KoaBody({
     multipart: true,
@@ -30,6 +31,7 @@ router.post('/upload', async (ctx) => {
             msg: '请上传文件，参数: file'
         } 
     }
+    await autoMkdir('./data/images')
     const name = `${new Date().getTime()}${file.name}`;
     const reader = fs.createReadStream(file.path)
     let filePath = path.resolve(__dirname, './data/images/', name)
